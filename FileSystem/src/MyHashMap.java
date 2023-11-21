@@ -10,15 +10,14 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 	public static final String ILLEGAL_ARG_LOAD_FACTOR = "Load Factor must be positive";
 	public static final String ILLEGAL_ARG_NULL_KEY = "Keys must be non-null";
 	
-	private double loadFactor;
 	private int capacity;
 	private int size;
+	private double loadFactor;
 
 	// Use this instance variable for Separate Chaining conflict resolution
 	private List<HashMapEntry<K, V>>[] buckets;  
+	private HashMapEntry<K, V>[] entries;
 	
-	// Use this instance variable for Linear Probing
-	private HashMapEntry<K, V>[] entries; 	
 
 	public MyHashMap() {
 		this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
@@ -52,6 +51,15 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		entries = (HashMapEntry<K, V>[]) new HashMapEntry<?, ?>[initialCapacity];
 	}
 
+	/**
+	 * Adds the specified key, value pair to this DefaultMap
+	 * Note: duplicate keys are not allowed
+	 * 
+	 * @param key The key to be added to the HashMap
+	 * @param value The value to be added to the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 * @return true if the (key, value) pair was added to the HashMap, otherwise false
+	 */
 	@Override
 	public boolean put(K key, V value) throws IllegalArgumentException {
 		// can also use key.hashCode() assuming key is not null
@@ -79,6 +87,15 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		return true;
 	}
 
+
+	/**
+	 * Replaces the value that maps to the key if it is present
+	 * 
+	 * @param key The key for searching the (key, value) pair in the HashMap
+	 * @param newValue The value to be updated to the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 * @return true if the (key, value) pair was found and updated, false otherwise
+	 */
 	@Override
 	public boolean replace(K key, V newValue) throws IllegalArgumentException {
 		if (key == null) {
@@ -101,6 +118,14 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		return false;
 	}
 
+
+	/**
+	 * Remove the entry corresponding to the given key
+	 * 
+	 * @param key The key for searching the (key, value) pair in the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 * @return true if the (key ,value) pair was removed from the HashMap, false otherwise
+	 */
 	@Override
 	public boolean remove(K key) throws IllegalArgumentException {
 		if (key == null) {
@@ -118,6 +143,14 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		return true;
 	}
 
+
+	/**
+	 * Replace the (key value) pair if it exist in the HashMap else add it to the HashMap
+	 * 
+	 * @param key The key for checking whether there a (key, value) pair exit in the HashMap
+	 * @param value The value to be added or updated in the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 */
 	@Override
 	public void set(K key, V value) throws IllegalArgumentException {
 		if (!replace(key, value)) {
@@ -125,6 +158,14 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		}
 	}
 
+
+	/**
+	 * 
+	 * @param key The key for searching the (key, value) pair in the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 * @return the value corresponding to the specified key, null if key doesn't 
+	 * exist in hash map
+	 */
 	@Override
 	public V get(K key) throws IllegalArgumentException {
 		if (key == null) {
@@ -150,16 +191,33 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		return null;
 	}
 
+
+	/**
+	 * 
+	 * @return the size of the HashMap
+	 */
 	@Override
 	public int size() {
 		return size;
 	}
 
+
+	/**
+	 * 
+	 * @return whether the HashMap is empty
+	 */
 	@Override
 	public boolean isEmpty() {
 		return size == 0;
 	}
 
+
+	/**
+	 * 
+	 * @param key Checking whether this key is present in the HashMap
+	 * @throws IllegalArgumentException if the key is null
+	 * @return true if the key is present in the HashMap else false
+	 */
 	@Override
 	public boolean containsKey(K key) throws IllegalArgumentException {
 		if (key == null) {
@@ -182,6 +240,11 @@ public class MyHashMap<K, V> implements DefaultMap<K, V> {
 		return false;
 	}
 
+
+	/**
+	 * 
+	 * @return an ArrayList of keys that is present in the HashMap
+	 */
 	@Override
 	public List<K> keys() {
 		List<K> result = new ArrayList<>();
