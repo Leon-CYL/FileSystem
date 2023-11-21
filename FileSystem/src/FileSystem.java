@@ -8,17 +8,26 @@ public class FileSystem {
     MyHashMap<String, ArrayList<FileData>> nameMap;
     MyHashMap<String, ArrayList<FileData>> dateMap;
 
+    /**
+     * Default Constructure
+     */
     public FileSystem() {
         nameMap = new MyHashMap<>();
         dateMap = new MyHashMap<>();
     }
 
+
+    /**
+     * Constructure that load all the data from the input file to the FileSystem
+     * @param inputFile a string path to the input file
+     */
     public FileSystem(String inputFile) {
         nameMap = new MyHashMap<>();
         dateMap = new MyHashMap<>();
         try {
             File f = new File(inputFile);
             Scanner sc = new Scanner(f);
+            System.out.println(f.getAbsolutePath());
             while (sc.hasNextLine()) {
                 String[] data = sc.nextLine().split(", ");
                 this.add(data[0], data[1], data[2]);
@@ -29,6 +38,16 @@ public class FileSystem {
         }
     }
 
+
+    /**
+     * Add a FileData Object to the FileSystem
+     * Note: File with the same name and diretory will not be added to the fileSystem
+     * 
+     * @param fileName The name of the file to be added
+     * @param directory The diretory that the file is stored
+     * @param modifiedDate The last time that this file is modified
+     * @return true if the FileData is added to the FileSystem else false
+     */
     public boolean add(String fileName, String directory, String modifiedDate) {
         FileData f = new FileData(fileName, directory, modifiedDate);
         if (nameMap.get(fileName) == null) {
@@ -65,6 +84,14 @@ public class FileSystem {
         return true;
     }
 
+
+    /**
+     * Find the corresponding file with the given file name and directory
+     * 
+     * @param name The name of the file we are looking for
+     * @param directory The diretory of the file we are looking for
+     * @return a FileData object if it exist in the FileSystem else null
+     */
     public FileData findFile(String name, String directory) {
         if (!name.contains(name)) {
             return null;
@@ -82,6 +109,11 @@ public class FileSystem {
         return null;
     }
 
+
+    /**
+     * 
+     * @return an ArrayList of all the file names in the FileSystem
+     */
     public ArrayList<String> findAllFilesName() {
         ArrayList<String> lst = new ArrayList<>();
         for (String key : nameMap.keys()) {
@@ -92,6 +124,12 @@ public class FileSystem {
         return lst;
     }
 
+
+    /**
+     * 
+     * @param name the file name for searching FileData in the FileSystem
+     * @return an ArrayList of FileData with the given file names from the FileSystem
+     */
     public ArrayList<FileData> findFilesByName(String name) {
         if (nameMap.get(name) == null) {
             return new ArrayList<>();
@@ -99,6 +137,12 @@ public class FileSystem {
         return nameMap.get(name);
     }
 
+
+    /**
+     * 
+     * @param modifiedDate the date for searching FilData in the FileSystem
+     * @return an ArrayList of FileData with the given modifiedDate from the FileSystem
+     */
     public ArrayList<FileData> findFilesByDate(String modifiedDate) {
         ArrayList<FileData> lst = new ArrayList<>();
         if (dateMap.get(modifiedDate) == null) {
@@ -107,6 +151,13 @@ public class FileSystem {
         return dateMap.get(modifiedDate);
     } 
 
+
+    /**
+     * 
+     * @param modifiedDate the date for searching FilData in the FileSystem
+     * @return a list of FileData with the given modifiedDate that has at least another file with 
+     * the same file name in a different directory.
+     */
     public ArrayList<FileData> findFilesInMultDir(String modifiedDate) {
         ArrayList<FileData> lst = new ArrayList<>();
         if (dateMap.get(modifiedDate) == null) {
@@ -125,6 +176,12 @@ public class FileSystem {
         return lst;
     }
 
+
+    /**
+     * 
+     * @param name the file name for searching corresponding the FileData 
+     * @return true if the FileData wa found and removed from the FileSystem else false
+     */
     public boolean removeByName(String name) {
         if (nameMap.get(name) == null) {
             return false;
@@ -150,6 +207,13 @@ public class FileSystem {
         return true;
     }
 
+
+    /**
+     * 
+     * @param name the file name for searching corresponding the FileData
+     * @param directory the directory for searching corresponding the FileData
+     * @return true if the FileData was found and removed from the FileSystem else false
+     */
     public boolean removeFile(String name, String directory) {
         if (nameMap.get(name) == null) {
             return false;
